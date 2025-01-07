@@ -18,7 +18,6 @@ func _ready() -> void:
 
 func spawn_next() -> void:
 	new_node = scenes.pick_random().instantiate()
-	print("Created new tile ", new_node)
 	new_node.position.x = $Player.position.x + 20.0
 	add_child(new_node)
 

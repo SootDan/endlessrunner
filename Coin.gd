@@ -7,6 +7,6 @@ func _ready() -> void:
 	anim.loop_mode = Animation.LOOP_LINEAR
 
 
-func coin_collected(body: Node3D):
+func coin_collected(_body: Node3D):
 	Event.emit_signal("player_collected_coin")
 	queue_free()
