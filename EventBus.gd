@@ -1,0 +1,6 @@
+class_name EventBus
+extends Node
+
+signal player_entered_tile
+signal player_collected_coin
+signal player_died

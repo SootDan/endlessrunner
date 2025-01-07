@@ -1,0 +1,83 @@
+[gd_scene load_steps=12 format=3 uid="uid://c0ip4cxu4fw24"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_hsuqg"]
+[ext_resource type="Script" path="res://Player.gd" id="2_08h6d"]
+[ext_resource type="PackedScene" uid="uid://d1cne7xqab6h0" path="res://Human.blend" id="2_id47f"]
+[ext_resource type="PackedScene" uid="uid://crnq7s67ibn1y" path="res://RunnerTile.tscn" id="2_ltc0t"]
+[ext_resource type="Theme" uid="uid://c20x3v3v7ghfq" path="res://new_theme.tres" id="5_hbxlv"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cd760"]
+height = 1.7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_piapp"]
+bg_color = Color(1.92523e-07, 0.405801, 0.465635, 1)
+
+[sub_resource type="Theme" id="Theme_ipf4w"]
+Panel/styles/panel = SubResource("StyleBoxFlat_piapp")
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_g1bdc"]
+mie_eccentricity = 0.25
+turbidity = 21.49
+ground_color = Color(0, 0.517647, 0.776471, 1)
+
+[sub_resource type="Sky" id="Sky_uktcy"]
+sky_material = SubResource("PhysicalSkyMaterial_g1bdc")
+
+[sub_resource type="Environment" id="Environment_mymys"]
+background_mode = 2
+sky = SubResource("Sky_uktcy")
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_hsuqg")
+scenes = Array[PackedScene]([ExtResource("2_ltc0t")])
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 1, 2.5)
+script = ExtResource("2_08h6d")
+
+[node name="Human" parent="Player" instance=ExtResource("2_id47f")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_cd760")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(-1, 6.18172e-08, -6.18172e-08, 0, 0.707107, 0.707107, 8.74228e-08, 0.707107, -0.707107, 0, 3, -1)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.560639, 0.585527, -0.585527, 0, 0.707107, 0.707107, 0.82806, 0.396432, -0.396432, 0, 15, 0)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Control"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+theme = ExtResource("5_hbxlv")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = -1.5
+offset_right = -25.0
+offset_bottom = 1.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ipf4w")
+text = "Coins Collected: 0"
+fit_content = true
+scroll_active = false
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_mymys")
