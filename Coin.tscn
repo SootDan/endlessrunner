@@ -44,7 +44,7 @@ _data = {
 }
 
 [node name="Coin" type="Node3D"]
-transform = Transform3D(0.999848, 0, -0.0174526, 0, 1, 0, 0.0174526, 0, 0.999848, 0, 2, 1)
+transform = Transform3D(0.999848, 0, -0.0174545, 0, 1, 0, 0.0174545, 0, 0.999848, 0.5, 2, 1)
 script = ExtResource("1_1wl64")
 
 [node name="Coin" parent="." instance=ExtResource("1_vrx8x")]

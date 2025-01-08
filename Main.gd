@@ -18,14 +18,22 @@ func _ready() -> void:
 
 func spawn_next() -> void:
 	new_node = scenes.pick_random().instantiate()
-	new_node.position.x = $Player.position.x + 20.0
+	new_node.position.x = $Player.position.x + 31.5
 	add_child(new_node)
 
 
 func coin_slots() -> void:
 	coins_collected += 1
+	$AudioStreamPlayer.play()
 	interface.text = "Coins Collected: %s" % coins_collected
 
 
 func game_over() -> void:
-	pass
+	$Control/GameOver.visible = true
+	$MusicPlayer.stop()
+	$Control/GameOver/AudioStreamPlayer.play()
+	$Player.queue_free()
+
+
+func play_again() -> void:
+	get_tree().reload_current_scene()

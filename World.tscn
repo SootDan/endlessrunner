@@ -1,19 +1,59 @@
-[gd_scene load_steps=12 format=3 uid="uid://c0ip4cxu4fw24"]
+[gd_scene load_steps=21 format=3 uid="uid://c0ip4cxu4fw24"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_hsuqg"]
 [ext_resource type="Script" path="res://Player.gd" id="2_08h6d"]
-[ext_resource type="PackedScene" uid="uid://d1cne7xqab6h0" path="res://Human.blend" id="2_id47f"]
 [ext_resource type="PackedScene" uid="uid://crnq7s67ibn1y" path="res://RunnerTile.tscn" id="2_ltc0t"]
+[ext_resource type="PackedScene" uid="uid://7naml3i8pmpx" path="res://NewHuman.blend" id="4_fl7wv"]
+[ext_resource type="AudioStream" uid="uid://bk8gva47issep" path="res://SFX/Woosh.wav" id="5_28bew"]
 [ext_resource type="Theme" uid="uid://c20x3v3v7ghfq" path="res://new_theme.tres" id="5_hbxlv"]
+[ext_resource type="AudioStream" uid="uid://dtm47bdktyrb3" path="res://SFX/GameOver.wav" id="6_boual"]
+[ext_resource type="AudioStream" uid="uid://cyprmmej2eco0" path="res://FreeSFX/GameSFX/PickUp/Retro PickUp Coin 04.wav" id="6_vkilt"]
+[ext_resource type="AudioStream" uid="uid://c6hoti1yv5bpb" path="res://SFX/BGM.mp3" id="8_hbg0u"]
+[ext_resource type="AudioStream" uid="uid://cec8o23qex8ty" path="res://FreeSFX/GameSFX/Music/Success/Retro Success Melody 01 - sawtooth lead 1.wav" id="8_vxq8c"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cd760"]
 height = 1.7
+
+[sub_resource type="Animation" id="Animation_accs3"]
+resource_name = "GoLeft"
+length = 0.25
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0.0666667, 1, 2.5, 1, 2.5, 0.233333, 1, 2.5, 1, 1.5)
+
+[sub_resource type="Animation" id="Animation_s5js0"]
+length = 0.001
+tracks/0/type = "position_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 2.5, 1, 2.5)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dn8y5"]
+_data = {
+"GoLeft": SubResource("Animation_accs3"),
+"RESET": SubResource("Animation_s5js0")
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_piapp"]
 bg_color = Color(1.92523e-07, 0.405801, 0.465635, 1)
 
 [sub_resource type="Theme" id="Theme_ipf4w"]
 Panel/styles/panel = SubResource("StyleBoxFlat_piapp")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ytaon"]
+bg_color = Color(0, 0.423529, 0.513726, 1)
+border_color = Color(0.133333, 0.0941176, 0.8, 1)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+shadow_size = 3
+shadow_offset = Vector2(0, 3)
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_g1bdc"]
 mie_eccentricity = 0.25
@@ -35,7 +75,25 @@ scenes = Array[PackedScene]([ExtResource("2_ltc0t")])
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2.5, 1, 2.5)
 script = ExtResource("2_08h6d")
 
-[node name="Human" parent="Player" instance=ExtResource("2_id47f")]
+[node name="Human" parent="Player" instance=ExtResource("4_fl7wv")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="Skeleton3D" parent="Player/Human/Armature" index="0"]
+bones/0/rotation = Quaternion(-0.0652064, 0.24689, 0.24689, 0.934794)
+bones/0/scale = Vector3(1, 1, 1)
+bones/2/rotation = Quaternion(-0.0391407, 0.190064, -0.188814, 0.962649)
+bones/2/scale = Vector3(1, 1, 1)
+bones/3/rotation = Quaternion(-0.000236579, 0.0160052, -0.015857, 0.999746)
+bones/3/scale = Vector3(1, 1, 1)
+bones/4/rotation = Quaternion(-0.0298583, 0.188245, -0.190502, 0.963006)
+bones/5/rotation = Quaternion(0.00118365, 0.0156781, -0.0158145, 0.999751)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(-0.759708, -0.018378, -0.018378, 0.649745)
+bones/6/scale = Vector3(1, 1, 1)
+bones/7/rotation = Quaternion(0.0608497, -0.000308729, 0.0242968, 0.997851)
+bones/8/rotation = Quaternion(0.726348, 0.223411, 0.223412, 0.610404)
+bones/8/scale = Vector3(0.999999, 1, 0.999994)
+bones/9/rotation = Quaternion(-0.0654628, -0.220273, -0.00277619, 0.973235)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
@@ -44,8 +102,22 @@ shape = SubResource("CapsuleShape3D_cd760")
 [node name="Camera3D" type="Camera3D" parent="Player"]
 transform = Transform3D(-1, 6.18173e-08, -6.18173e-08, 0, 0.707107, 0.707107, 8.74228e-08, 0.707107, -0.707107, 0, 5, -1.5)
 
+[node name="Woosh" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource("5_28bew")
+volume_db = -6.0
+pitch_scale = 2.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
+libraries = {
+"": SubResource("AnimationLibrary_dn8y5")
+}
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.560639, 0.585527, -0.585527, 0, 0.707107, 0.707107, 0.82806, 0.396432, -0.396432, 0, 15, 0)
+transform = Transform3D(-1, 6.18173e-08, -6.18173e-08, 0, 0.707107, 0.707107, 8.74227e-08, 0.707107, -0.707107, 0, 15, 0)
+shadow_enabled = true
+shadow_opacity = 0.5
+directional_shadow_blend_splits = true
+sky_mode = 1
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3
@@ -75,9 +147,82 @@ offset_bottom = 1.5
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_ipf4w")
+theme_override_font_sizes/normal_font_size = 20
 text = "Coins Collected: 0"
 fit_content = true
 scroll_active = false
 
+[node name="GameOver" type="Panel" parent="Control"]
+visible = false
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.283
+anchor_right = 0.717
+anchor_bottom = 1.0
+offset_left = -0.0160217
+offset_top = 149.0
+offset_right = 0.0159912
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_hbxlv")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ytaon")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/GameOver"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = -50.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GameOver" type="RichTextLabel" parent="Control/GameOver/VBoxContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("5_hbxlv")
+bbcode_enabled = true
+text = "[center]Game Over...[/center]"
+
+[node name="HighScoreNum" type="RichTextLabel" parent="Control/GameOver/VBoxContainer"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+theme = ExtResource("5_hbxlv")
+bbcode_enabled = true
+text = "[center]
+[/center]"
+
+[node name="PlayAgain" type="Button" parent="Control/GameOver/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("5_hbxlv")
+text = "Play Again?"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control/GameOver"]
+stream = ExtResource("6_boual")
+volume_db = -12.0
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_mymys")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_vkilt")
+volume_db = -18.0
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_hbg0u")
+volume_db = -12.0
+autoplay = true
+parameters/looping = true
+
+[node name="InterfaceSounds" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_vxq8c")
+
+[connection signal="pressed" from="Control/GameOver/VBoxContainer/PlayAgain" to="." method="play_again"]
+
+[editable path="Player/Human"]
