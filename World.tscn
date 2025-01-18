@@ -8,7 +8,7 @@
 [ext_resource type="Theme" uid="uid://c20x3v3v7ghfq" path="res://new_theme.tres" id="5_hbxlv"]
 [ext_resource type="AudioStream" uid="uid://dtm47bdktyrb3" path="res://SFX/GameOver.wav" id="6_boual"]
 [ext_resource type="AudioStream" uid="uid://cyprmmej2eco0" path="res://FreeSFX/GameSFX/PickUp/Retro PickUp Coin 04.wav" id="6_vkilt"]
-[ext_resource type="Texture2D" uid="uid://dnwkh5a4gog7d" path="res://web/index.icon.png" id="7_2di35"]
+[ext_resource type="Texture2D" uid="uid://bx2erf8kpvd0x" path="res://web/index.icon.png" id="7_2di35"]
 [ext_resource type="AudioStream" uid="uid://c6hoti1yv5bpb" path="res://SFX/BGM.mp3" id="8_hbg0u"]
 [ext_resource type="AudioStream" uid="uid://cec8o23qex8ty" path="res://FreeSFX/GameSFX/Music/Success/Retro Success Melody 01 - sawtooth lead 1.wav" id="8_vxq8c"]
 [ext_resource type="Shader" path="res://World.gdshader" id="9_ps87y"]
