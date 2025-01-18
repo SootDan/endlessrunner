@@ -14,6 +14,7 @@ func _ready() -> void:
 	Event.connect("player_entered_tile", spawn_next)
 	Event.connect("player_collected_coin", coin_slots)
 	Event.connect("player_died", game_over)
+	Event.connect("player_lost_health", change_player_health)
 
 
 func spawn_next() -> void:
@@ -37,3 +38,11 @@ func game_over() -> void:
 
 func play_again() -> void:
 	get_tree().reload_current_scene()
+
+
+func change_player_health() -> void:
+	$Player.health_bars(-1)
+	$HurtSound.play()
+	for i in $Control/Panel/HBoxContainer.get_child_count():
+		if i >= $Player.HEALTH_POINTS:
+			$Control/Panel/HBoxContainer.get_child(i).visible = false

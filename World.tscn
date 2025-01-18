@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://c0ip4cxu4fw24"]
+[gd_scene load_steps=28 format=3 uid="uid://c0ip4cxu4fw24"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1_hsuqg"]
 [ext_resource type="Script" path="res://Player.gd" id="2_08h6d"]
@@ -8,8 +8,11 @@
 [ext_resource type="Theme" uid="uid://c20x3v3v7ghfq" path="res://new_theme.tres" id="5_hbxlv"]
 [ext_resource type="AudioStream" uid="uid://dtm47bdktyrb3" path="res://SFX/GameOver.wav" id="6_boual"]
 [ext_resource type="AudioStream" uid="uid://cyprmmej2eco0" path="res://FreeSFX/GameSFX/PickUp/Retro PickUp Coin 04.wav" id="6_vkilt"]
+[ext_resource type="Texture2D" uid="uid://dnwkh5a4gog7d" path="res://web/index.icon.png" id="7_2di35"]
 [ext_resource type="AudioStream" uid="uid://c6hoti1yv5bpb" path="res://SFX/BGM.mp3" id="8_hbg0u"]
 [ext_resource type="AudioStream" uid="uid://cec8o23qex8ty" path="res://FreeSFX/GameSFX/Music/Success/Retro Success Melody 01 - sawtooth lead 1.wav" id="8_vxq8c"]
+[ext_resource type="Shader" path="res://World.gdshader" id="9_ps87y"]
+[ext_resource type="AudioStream" uid="uid://ckkh0ytmpapmx" path="res://SFX/HurtSound.ogg" id="13_ixf47"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cd760"]
 height = 1.7
@@ -41,6 +44,10 @@ _data = {
 "RESET": SubResource("Animation_s5js0")
 }
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fj0a8"]
+shader = ExtResource("9_ps87y")
+shader_parameter/effect_amount = 1.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_piapp"]
 bg_color = Color(1.92523e-07, 0.405801, 0.465635, 1)
 
@@ -55,17 +62,33 @@ corner_radius_top_right = 50
 shadow_size = 3
 shadow_offset = Vector2(0, 3)
 
-[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_g1bdc"]
-mie_eccentricity = 0.25
-turbidity = 21.49
-ground_color = Color(0, 0.517647, 0.776471, 1)
+[sub_resource type="Gradient" id="Gradient_pdig2"]
+interpolation_mode = 2
+colors = PackedColorArray(3.27289e-06, 0, 0.744075, 1, 0.59116, 0.709136, 0.966765, 1)
 
-[sub_resource type="Sky" id="Sky_uktcy"]
-sky_material = SubResource("PhysicalSkyMaterial_g1bdc")
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_p55q1"]
+noise_type = 4
+frequency = 0.0099
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_8ivt7"]
+color_ramp = SubResource("Gradient_pdig2")
+noise = SubResource("FastNoiseLite_p55q1")
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_4fiav"]
+panorama = SubResource("NoiseTexture2D_8ivt7")
+
+[sub_resource type="Sky" id="Sky_u73g3"]
+sky_material = SubResource("PanoramaSkyMaterial_4fiav")
 
 [sub_resource type="Environment" id="Environment_mymys"]
 background_mode = 2
-sky = SubResource("Sky_uktcy")
+background_energy_multiplier = 0.66
+sky = SubResource("Sky_u73g3")
+glow_enabled = true
+glow_intensity = 0.21
+glow_hdr_scale = 0.6
+fog_light_energy = 0.33
+fog_sun_scatter = 0.13
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_hsuqg")
@@ -127,6 +150,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Shader" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_fj0a8")
+custom_minimum_size = Vector2(1000, 200)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="Panel" type="Panel" parent="Control"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 1
@@ -140,17 +175,64 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = -1.5
-offset_right = -25.0
-offset_bottom = 1.5
+offset_left = 20.0
+offset_top = -8.0
+offset_right = -26.0
+offset_bottom = 7.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_ipf4w")
-theme_override_font_sizes/normal_font_size = 20
-text = "Coins Collected: 0"
+theme_override_font_sizes/normal_font_size = 25
+text = "Coins Collected: 0 
+"
 fit_content = true
 scroll_active = false
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 943.0
+offset_top = 1.0
+offset_right = -86.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ipf4w")
+theme_override_font_sizes/normal_font_size = 25
+text = "Lives:"
+fit_content = true
+scroll_active = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -86.0
+offset_right = -18.0
+offset_bottom = 20.0
+grow_horizontal = 0
+theme = ExtResource("5_hbxlv")
+
+[node name="1" type="TextureRect" parent="Control/Panel/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("7_2di35")
+expand_mode = 2
+
+[node name="2" type="TextureRect" parent="Control/Panel/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("7_2di35")
+expand_mode = 2
+
+[node name="3" type="TextureRect" parent="Control/Panel/HBoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+texture = ExtResource("7_2di35")
+expand_mode = 2
 
 [node name="GameOver" type="Panel" parent="Control"]
 visible = false
@@ -222,6 +304,11 @@ parameters/looping = true
 
 [node name="InterfaceSounds" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_vxq8c")
+volume_db = -6.0
+
+[node name="HurtSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_ixf47")
+volume_db = -6.0
 
 [connection signal="pressed" from="Control/GameOver/VBoxContainer/PlayAgain" to="." method="play_again"]
 

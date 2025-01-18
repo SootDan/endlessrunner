@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 
 @export var SPEED := 15.0
+@export var HEALTH_POINTS := 3
 const JUMP_VELOCITY = 5.0
 
 
@@ -31,3 +32,9 @@ func _physics_process(delta: float) -> void:
 	
 	velocity.x = SPEED
 	move_and_slide()
+
+
+func health_bars(i: int) -> void:
+	HEALTH_POINTS += i
+	if HEALTH_POINTS <= 0:
+		Event.emit_signal("player_died")
